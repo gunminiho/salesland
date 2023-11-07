@@ -3,10 +3,10 @@ const { Sequelize } = require("sequelize");
 
 const fs = require('fs');
 const path = require('path');
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
 // Crea una instancia a la DB con Sequelize
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/salesland`, {
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
     logging: false,
     native: false,
 });
@@ -18,7 +18,7 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
 const basename = path.basename(__filename);
 const modelDefiners = [];
 // Objeto para almacenar las definiciones de modelos
-const modelDefinitions = {}; 
+const modelDefinitions = {};
 
 // Lee y carga las definiciones de modelos
 fs.readdirSync(path.join(__dirname, '/models'))
@@ -69,7 +69,7 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map(([modelName, modelDefinition]) => [modelName.charAt(0).toUpperCase() + modelName.slice(1), modelDefinition]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-console.log("modelos: ",sequelize.models);
+console.log("modelos: ", sequelize.models);
 
 //Relaciones
 
